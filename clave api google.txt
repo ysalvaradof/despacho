@@ -1,0 +1,6 @@
+AIzaSyCWKYWiT1dHiAwPtZm08r2Tzovls2oB2XA
+
+
+
+
+http://maps.googleapis.com/maps/api/staticmap?center=Australia&size=640x400&style=element:labels|visibility:off&style=element:geometry.stroke|visibility:off&style=feature:landscape|element:geometry|saturation:-100&style=feature:water|saturation:-100|invert_lightness:true&key=AIzaSyCWKYWiT1dHiAwPtZm08r2Tzovls2oB2XA

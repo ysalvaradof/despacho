@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8"/>
+	<title>pruebas de salidas</title>
+
+</head>
+<body>
+
+<span class ="q">
+<li><a href="login.php">_</a></li>
+</span>
+
+</body>
+</html>

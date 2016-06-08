@@ -1,0 +1,7 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/Volumes/GIGAS Radius/var/www/html/plataformagps/assets/js/load.js",
+        "/Volumes/GIGAS Radius/var/www/html/plataformagps/assets/js/app2.js",
+        "/Volumes/GIGAS Radius/var/www/html/plataformagps/assets/js/toggle_close.js"
+    ]
+}

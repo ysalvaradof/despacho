@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Principal</title>
+
+	<!-- Favicon -->
+	<!-- 
+    <link rel="apple-touch-icon-precomposed" size ="180x180" href="/media/favicon/fav-180.png"/>
+    <link rel="apple-touch-icon-precomposed" size ="152x152" href="/media/favicon/fav-152.png"/>
+    <link rel="apple-touch-icon-precomposed" size ="144x144" href="/media/favicon/fav-144.png"/>
+    <link rel="apple-touch-icon-precomposed" size ="120x120" href="/media/favicon/fav-120.png"/>
+    <link rel="apple-touch-icon-precomposed" size ="114x114" href="/media/favicon/fav-114.png"/>
+    <link rel="apple-touch-icon-precomposed" size ="76x76" href="/media/favicon/fav-76.png"/>
+    <link rel="apple-touch-icon-precomposed" size ="72x72" href="/media/favicon/fav-72.png"/>
+    <link rel="apple-touch-icon-precomposed" size ="57x57" href="/media/favicon/fav-57.png"/>
+    <link rel="apple-touch-icon" size ="180x180" href="/media/favicon/fav-180_U2695Y3.png"/>
+    <link rel="apple-touch-icon" size ="144x144" href="/media/favicon/fav-144_1XTxc3T.png"/>
+    <link rel="apple-touch-icon" size ="114x114" href="/media/favicon/fav-114_3Hwai07.png"/>
+    <link rel="apple-touch-icon" size ="72x72" href="/media/favicon/fav-72_ksWRNBu.png"/>
+    <link rel="apple-touch-icon" size ="57x57" href="/media/favicon/fav-57_bKYab1p.png"/>
+    <link rel="touch-icon" size ="192x192" href="/media/favicon/fav-192.png"/>
+    <link rel="shortcut icon" size ="192x192" href="/media/favicon/fav-192_YswFNbi.png"/>
+    <link rel="shortcut icon" size ="128x128" href="/media/favicon/fav-128.png"/>
+    <link rel="shortcut icon" size ="48x48" href="/media/favicon/fav-48.png"/>
+    <link rel="shortcut icon" size ="32x32" href="/media/favicon/fav-32.png"/>
+    <link rel="shortcut icon" size ="16x16" href="/media/favicon/fav-16.png"/>
+    <link rel="icon" size ="192x192" href="/media/favicon/fav-192_ugbzPhi.png"/>
+    <link rel="shortcut icon" size ="32x32" href="/media/favicon/fav-32.png"/> -->
+
+
+	<!-- CSS -->
+	<link type="text/css" rel="stylesheet" href="/static/fonts/lato.css" />
+	<link type="text/css" rel="stylesheet" href="/static/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="/static/css/bootstrap-datetimepicker.css" />
+	<link type="text/css" rel="stylesheet" href="/static/css/ladda-themeless.min.css" />
+	<link type="text/css" rel="stylesheet" href="/static/css/animate.css" />
+	<link type="text/css" rel="stylesheet" href="/static/css/sweetalert.css" />
+	<link rel="stylesheet" href="/static/css/app.cdc4a7869b30.css" type="text/css" />
+	<link rel="stylesheet" href="/static/css/new.d084813e82e8.css" type="text/css" />
+	<link rel="stylesheet" href="/static/css/calendar.ba2cfd395915.css" type="text/css" />
+
+	<!-- Javascript -->
+	<script type="text/javascript" src="/static/jquery/jquery.js"></script>
+	<script type="text/javascript" src="/static/lodash/lodash.min.js"></script>
+	<script type="text/javascript" src="/static/moment/moment.min.js"></script>
+	<script type="text/javascript" src="/static/moment-duration-format/moment-duration-format.js"></script>
+	<script type="text/javascript" src="/static/js/bootstrap.js"></script>
+	<script type="text/javascript" src="/static/js/jquery.form.js"></script>
+	<script type="text/javascript" src="/static/geocomplete/jquery.geocomplete.min.js"></script>
+	<script type="text/javascript" src="/static/js/datetimepicker.js"></script>
+	<script type="text/javascript" src="/static/dropzone/dropzone.min.js"></script>
+	<script type="text/javascript" src="/static/screenfull/screenfull.js"></script>
+	<script type="text/javascript" src="/static/js/materialize.js"></script>
+
+	<script>
+		$(function () {
+			// Account change
+			$('#accounts .account').click(function (e) {
+				e.preventDefault();
+				if (!$(this).hasClass('active')) {
+					$('form#account-form input[name="account"]').val($(this).data('account'));
+					$('form#account-form').submit();
+				}
+			});
+
+			// fullscreen toggle
+			$('#fullscreen img').click(function (e) {
+				e.preventDefault();
+				if (screenfull.enabled) {
+					screenfull.toggle()
+				}
+			});
+
+			// Modal initialization
+			$('.modal-load').click(function (e) {
+				e.preventDefault();
+				var modal = $('#modal').modal();
+				$.ajax({
+					type: 'get',
+					url: $(this).attr('data-href'),
+					success: function (data) {
+						$('#modal .modal-content').html(data);
+					}
+				});
+			});
+		});
+
+		window.handleAppNavigation = function (location) {
+			//TODO: figure out a better way to handle this
+			var pathname = location.pathname;
+			var navbar = $('#navbar');
+			if (location.action !== 'POP') {
+				if (navbar[0]) {
+					var mainButtons = $('>ul>li', navbar);
+					mainButtons.each(function (index, val) {
+						var btn = $(val);
+						btn.removeClass('active');
+
+						if (btn.hasClass('js-tasks-nav-dropdown')) {
+							if (pathname.indexOf('/tasks/') > -1 || pathname.indexOf('/calendar/') > -1) {
+								btn.addClass('active');
+							}
+						}
+
+						if (btn.hasClass('js-users-nav-dropdown')) {
+							if (pathname.indexOf('/users/') > -1) {
+								btn.addClass('active');
+							}
+						}
+					});
+				}
+			}
+		}
+	</script>
+
+	<script type="text/javascript" src="https://gsmtasks.com/static/raven-js/raven.min.js"></script>
+
+	<!-- Raven -->
+	<script type="text/javascript">
+		Raven.config('https://1e063dd7f0ff4c5daaff4d1eb15f73f2@app.getsentry.com/52302', {
+			release: '5151a60bf9f53b90c18eda5ec425b71f5ff900c1',
+			ignoreUrls: [/maps\.googleapis\.com/]
+		}).install();
+	</script>
+
+	<!-- Intercom -->
+
+
+
+	<!-- Google maps -->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAyf7SPeHQKOyeKLUHdokDYcJS9DOJIj9w&libraries=places&sensor=false"></script>
+
+	<!-- Google analytics -->
+	<script>
+		(function (i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function () {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o),
+				m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+		ga('create', 'UA-58469470-5', 'auto');
+		ga('send', 'pageview');
+	</script>
+
+	<!-- Fonts -->
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic&subset=latin,latin-ext,cyrillic,cyrillic-ext' rel='stylesheet' type='text/css'>
+
+	<!-- Extra head -->
+
+</head>
+
+<body class="">
+
+
+
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="navbar-header">
+						<a href="/app/personal-2/dashboard/" class="navbar-brand">
+							<img src="https://gsmtasks.com/static/images/logo.svg" alt="Tasks" />
+						</a>
+					</div>
+					<div id="navbar" class="navbar-collapse collapse">
+						<ul class="nav navbar-nav navbar-left">
+							<li class="active">
+								<a href="/app/personal-2/dashboard/">
+                Dashboard
+              </a>
+							</li>
+							<li class=" dropdown js-tasks-nav-dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                Tareas
+              </a>
+								<ul class="dropdown-menu" role="menu">
+									<li class=" js-react-nav-link">
+										<a href="/app/personal-2/tasks/">
+                    List view
+                  </a>
+									</li>
+									<li class=" js-task-create-modal-button">
+										<div class="task-modal-button" data-user="https://gsmtasks.com/api/tasks/users/6d26249a-94b3-4fc2-ba97-746d3ae95f95/" data-token="122dc66c7fa03f6bc3d02645ef9e86fe500b0f0e" data-account="https://gsmtasks.com/api/tasks/accounts/21cdc2ec-b582-4fc2-8b4d-870efb04a702/" data-account-id="21cdc2ec-b582-4fc2-8b4d-870efb04a702" data-account-slug="personal-2" data-account-dashboard-worker-limit="3" data-timezone="America/Santiago" data-button-type="menu-new" data-country-code="CL">
+											<a href="/app/personal-2/tasks/create/">
+                      Create task
+                    </a>
+										</div>
+									</li>
+
+									<li class="">
+										<a href="/app/personal-2/imports/upload/">
+                      Import tasks
+                    </a>
+									</li>
+
+									<li class="">
+										<a href="/app/personal-2/exports/">
+                    Export tasks
+                  </a>
+									</li>
+									<li class=" js-react-nav-link">
+										<a href="/app/personal-2/calendar/">
+                    Calendar
+                  </a>
+									</li>
+									<li class="">
+										<a href="/app/personal-2/notifications/notifications/">
+                  Notifications
+                </a>
+									</li>
+								</ul>
+							</li>
+							<li class="">
+								<a href="/app/personal-2/clients/">
+                Contacts
+              </a>
+							</li>
+							<li class=" dropdown js-users-nav-dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                Analyze
+              </a>
+								<ul class="dropdown-menu" role="menu">
+									<li class="">
+										<a href="/app/personal-2/analyze/">
+                    Task analytics
+                  </a>
+									</li>
+									<li class=" js-react-nav-link">
+										<a href="/users/personal-2/route/optimizations/">
+                    Optimizaciones de ruta
+                  </a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+
+						<ul class="nav navbar-nav navbar-right">
+							<li id="accounts">
+								<ul class="list-unstyled">
+									<li class="dropdown">
+										<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+											<img src="https://gsmtasks.com/static/app/images/icons/account.svg" alt="Account" />
+											<span>personal</span>
+											<i class="fa fa-caret-down pull-right"></i>
+										</a>
+										<ul class="dropdown-menu" role="menu">
+
+											<li class="account" data-account="21cdc2ec-b582-4fc2-8b4d-870efb04a702">
+												<a href="#">
+                          personal
+                        </a>
+											</li>
+
+										</ul>
+									</li>
+								</ul>
+							</li>
+							<li class="">
+								<a href="/app/personal-2/accounts/details/">
+									<img src="https://gsmtasks.com/static/app/images/icons/settings.svg" alt="Settings" />
+								</a>
+							</li>
+							<li>
+								<a id="logoutgst" href="/users/logout/">
+									<img src="https://gsmtasks.com/static/app/images/icons/logout.svg" alt="Logout" />
+								</a>
+							</li>
+							<li id="fullscreen" class="hidden-xs">
+								<a href="#">
+									<img src="https://gsmtasks.com/static/app/images/icons/fullscreen.svg" alt="Fullscreen" />
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</nav>
+
+
+	<div class="app js-react-app"></div>
+	<script>
+		window.__INITIAL_STATE__ = {
+			"token": "122dc66c7fa03f6bc3d02645ef9e86fe500b0f0e",
+			"accounts": {
+				"activeAccount": {
+					"id": "21cdc2ec-b582-4fc2-8b4d-870efb04a702",
+					"url": "https://gsmtasks.com/api/tasks/accounts/21cdc2ec-b582-4fc2-8b4d-870efb04a702/",
+					"name": "personal",
+					"slug": "personal-2",
+					"timezone": "America/Santiago",
+					"country_code": "CL",
+					"address": null,
+					"managers": "https://gsmtasks.com/api/tasks/accounts/21cdc2ec-b582-4fc2-8b4d-870efb04a702/managers/",
+					"workers": "https://gsmtasks.com/api/tasks/accounts/21cdc2ec-b582-4fc2-8b4d-870efb04a702/workers/",
+					"task_duration": "00:15:00",
+					"dashboard_task_template": "",
+					"dashboard_worker_limit": 3
+				}
+			},
+			"users": {
+				"activeUser": {
+					"id": "6d26249a-94b3-4fc2-ba97-746d3ae95f95",
+					"url": "https://gsmtasks.com/api/tasks/users/6d26249a-94b3-4fc2-ba97-746d3ae95f95/",
+					"first_name": "yonatan",
+					"last_name": "alvarado",
+					"display_name": "yonatan alvarado",
+					"email": "ysalvaradof@hotmail.com",
+					"phone": "+56989635758"
+				}
+			},
+			"language": "es"
+		};
+	</script>
+
+	<div id="react-app" data-user="https://gsmtasks.com/api/tasks/users/6d26249a-94b3-4fc2-ba97-746d3ae95f95/" data-token="122dc66c7fa03f6bc3d02645ef9e86fe500b0f0e" data-account="https://gsmtasks.com/api/tasks/accounts/21cdc2ec-b582-4fc2-8b4d-870efb04a702/" data-account-id="21cdc2ec-b582-4fc2-8b4d-870efb04a702" data-account-slug="personal-2" data-account-dashboard-worker-limit="3" data-timezone="America/Santiago" data-language="es" data-request-latitude="-33,45" data-request-longitude="-70,6667"></div>
+
+
+
+
+
+	<script type="text/javascript" src="https://gsmtasks.com/static/common-2890c52a2580d3cf5657.js"></script>
+	<script type="text/javascript" src="https://gsmtasks.com/static/app-2890c52a2580d3cf5657.js"></script>
+
+	<script type="text/javascript" src="https://gsmtasks.com/static/dashboard-2890c52a2580d3cf5657.js"></script>
+
+
+	<!-- Bootstrap model -->
+	<div id="modal" class="modal fade" tabindex="-1" style="display: none;">
+		<div class="modal-dialog">
+			<div class="modal-content">
+			</div>
+		</div>
+	</div>
+
+	<!-- Account form -->
+	<form id="account-form" action="/app/personal-2/accounts/set/" method="post">
+		<input type='hidden' name='csrfmiddlewaretoken' value='PhAz75bouSO9BSSBoKxJG8u44yG20bXn' />
+		<input name="namespace" type="hidden" value="app" />
+		<input name="url_name" type="hidden" value="dashboard" />
+		<input name="account" type="hidden" value="21cdc2ec-b582-4fc2-8b4d-870efb04a702" />
+	</form>
+	<script>
+		// para login y logou
+		$(document).ready(function () {
+			$('#logoutgst').on('click', function () {
+				$.post('classes/login.php', {
+					op: 'destroy'
+				}, function (response) {
+					if (response[0].estado == true) {
+						location.href = './login';
+					}
+				}, 'json');
+			});
+
+			$.post('classes/login.php', {
+				op: 'isLogged'
+			}, function (response) {
+				if (response[0].estado == false) {
+					location.href = './login';
+				}
+			}, 'json');
+		});
+	</script>
+
+</body>
+
+
+</html>
